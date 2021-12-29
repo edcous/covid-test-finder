@@ -1,0 +1,63 @@
+const { default: axios } = require('axios');
+const fs = require('fs')
+const Stock = require('../models/stock.js')
+const connection = require('../config/db.config.js');
+const config = JSON.parse(fs.readFileSync('./cvs/tests.json', 'utf8'))
+var minutes = 10, the_interval = minutes * 60 * 1000;
+const timer = ms => new Promise(res => setTimeout(res, ms))
+const { Webhook, MessageBuilder } = require('discord-webhook-node');
+const hook = new Webhook("https://discord.com/api/webhooks/925840857209380885/Cm0_aNfJ_gnuzssYhHJs424NiB_7RqPzR5Cg3AaDfO6qYowAHHZoLUjIqAUQtzh16iOa");
+connection.once('open', () => console.log('DB Connected'))
+connection.on('error', () => console.log('Error with DB'))
+var x;
+(async () => {
+    await timer(2000)
+    for (var i = 0; i < config.length; i++) {
+        const sku = config[i]["sku"]
+        console.log(sku)
+        const res = await axios.post('https://www.cvs.com/RETAGPV3/OnlineShopService/V2/getSKUInventoryAndPrice', {"request":{"header":{"lineOfBusiness":"RETAIL","appName":"CVS_WEB","apiKey":"a2ff75c6-2da7-4299-929d-d670d827ab4a","channelName":"WEB","deviceToken":"d9708df38d23192e","deviceType":"DESKTOP","responseFormat":"JSON","securityType":"apiKey","source":"CVS_WEB","type":"retleg"}},"skuId":[config[i]["sku"]],"pageName":"PLP"})
+        const stock = res.data.response.getSKUInventoryAndPrice.skuInfo[0].stockLevel != 0
+        Stock.count({store: "CVS", storeID: config[i]["sku"]}, function (err, count){
+            if(count == 0){
+                Stock.create({store: "CVS", storeID: sku, isInStock: stock})
+            }
+            else{
+                Stock.findOneAndUpdate({store: "CVS", storeID: sku}, {isInStock: stock})
+            }
+          })
+          const embed = new MessageBuilder()
+          .setTitle('COVID Test Stock Update')
+          .setDescription('Stock on item :' + config[i]["brand"] + " is " + stock)
+          .setColor('#00b0f4')
+          .setTimestamp();
+          hook.send(embed);
+          await timer(5000)
+    }
+})();
+
+setInterval(function() {
+    (async () => {
+        for (var i = 0; i < config.length; i++) {
+            const sku = config[i]["sku"]
+            console.log(sku)
+            const res = await axios.post('https://www.cvs.com/RETAGPV3/OnlineShopService/V2/getSKUInventoryAndPrice', {"request":{"header":{"lineOfBusiness":"RETAIL","appName":"CVS_WEB","apiKey":"a2ff75c6-2da7-4299-929d-d670d827ab4a","channelName":"WEB","deviceToken":"d9708df38d23192e","deviceType":"DESKTOP","responseFormat":"JSON","securityType":"apiKey","source":"CVS_WEB","type":"retleg"}},"skuId":[config[i]["sku"]],"pageName":"PLP"})
+            const stock = res.data.response.getSKUInventoryAndPrice.skuInfo[0].stockLevel != 0
+            Stock.count({store: "CVS", storeID: config[i]["sku"]}, function (err, count){
+                if(count == 0){
+                    Stock.create({store: "CVS", storeID: sku, isInStock: stock})
+                }
+                else{
+                    Stock.findOneAndUpdate({store: "CVS", storeID: sku}, {isInStock: stock})
+                }
+              })
+              const embed = new MessageBuilder()
+              .setTitle('COVID Test Stock Update')
+              .setDescription('Stock on item :' + config[i]["brand"] + " is " + stock)
+              .setColor('#00b0f4')
+              .setTimestamp();
+              hook.send(embed);      
+              await timer(5000)
+        }
+    })();
+}, the_interval);
+  

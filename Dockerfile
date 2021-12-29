@@ -14,4 +14,4 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-CMD [ "node", "./walmart/walmart.js" ]
+RUN [ "node", "./walmart/walmart.js" && "node", "./cvs/cvs.js"]
