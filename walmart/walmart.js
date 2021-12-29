@@ -30,7 +30,7 @@ var wm_results = [];
       }
       console.log(wm_results)
 })();
-var minutes = 5, the_interval = minutes * 60 * 1000;
+var minutes = 10, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   console.log("I am doing my 5 minutes check");
   (async () => {
