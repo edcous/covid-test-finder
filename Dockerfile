@@ -14,4 +14,6 @@ RUN npm install
 # Bundle app source
 COPY . .
 
-RUN [ "node ./walmart/walmart.js" && "node ./cvs/cvs.js"]
+RUN npm install -g concurrently
+
+CMD concurrently "node ./cvs/cvs.js" "node ./walmart/walmart.js"
