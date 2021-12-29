@@ -1,4 +1,4 @@
-FROM node:16.7.0
+FROM mcr.microsoft.com/playwright:focal
 
 # Create app directory
 WORKDIR /usr/src/app
