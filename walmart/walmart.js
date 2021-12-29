@@ -7,8 +7,6 @@ const hook = new Webhook("https://discord.com/api/webhooks/925613913943441501/Go
 const config = JSON.parse(fs.readFileSync('./walmart/tests.json', 'utf8'))
 console.log(config);
 var wm_results = [];
-function() {
-    console.log("I am doing my 5 minutes check");
     (async () => {
       for (var i = 0; i < config.length; i++) {
         const browserType = playwright.webkit
