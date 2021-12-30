@@ -25,15 +25,16 @@ async function walmart() {
     await page.goto("https://www.walmart.com/ip/" + config[i]["upc"]);
     await page.screenshot({ path: config[i]["upc"] + ".png" });
     const stock = await page.$("text='Add to cart'") !== null
+    const price = await page.innerText('[itemprop="price"]', 'query').replace
     console.log(stock)
     const date = new Date().toISOString()
     const query = { store: "Walmart", storeID: config[i]["upc"].split('/')[1] };
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Walmart", storeID: config[i]["upc"].split('/')[1], isInStock: stock, lastUpdated: date, purchaseLink: "https://www.walmart.com/ip/" + config[i]["upc"]})
+        Stock.create({store: "Walmart", storeID: config[i]["upc"].split('/')[1], isInStock: stock, lastUpdated: date, price: price.replace('$',''), purchaseLink: "https://www.walmart.com/ip/" + config[i]["upc"]})
       }
       else{
-        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, purchaseLink: "https://www.walmart.com/ip/" + config[i]["upc"]}, {upsert: false}, function(err, doc) {});
+        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, price: price.replace('$',''), purchaseLink: "https://www.walmart.com/ip/" + config[i]["upc"]}, {upsert: false}, function(err, doc) {});
       }
     })
     await browser.close();
@@ -52,3 +53,5 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walmart()
 }, the_interval);
+
+walmart()

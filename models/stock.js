@@ -21,6 +21,12 @@ var stockSchema = new mongoose.Schema({
   },
   lastUpdated: {
     type: Date
+  },
+  pricePer: {
+    type: Number
+  },
+  count: {
+    type: Number
   }
 });
 
