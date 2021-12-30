@@ -20,7 +20,7 @@ var stockSchema = new mongoose.Schema({
     type: String
   },
   lastUpdated: {
-    type: String
+    type: Date
   }
 });
 
