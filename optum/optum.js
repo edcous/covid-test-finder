@@ -19,7 +19,7 @@ if(!stores.includes('optum')){
 async function optum() {
   for (var i = 0; i < config.length; i++) {
     const browserType = playwright.webkit
-    const browser = await browserType.launch({headless:false});
+    const browser = await browserType.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://store.optum.com/shop/products/" + config[i]["upc"]);
