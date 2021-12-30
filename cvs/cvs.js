@@ -19,15 +19,17 @@ if(!stores.includes('cvs')){
 async function cvs(){
         for (var i = 0; i < config.length; i++) {
             const sku = config[i]["sku"]
+            const date = new Date().toISOString()
             console.log(sku)
             const res = await axios.post('https://www.cvs.com/RETAGPV3/OnlineShopService/V2/getSKUInventoryAndPrice', {"request":{"header":{"lineOfBusiness":"RETAIL","appName":"CVS_WEB","apiKey":"a2ff75c6-2da7-4299-929d-d670d827ab4a","channelName":"WEB","deviceToken":"d9708df38d23192e","deviceType":"DESKTOP","responseFormat":"JSON","securityType":"apiKey","source":"CVS_WEB","type":"retleg"}},"skuId":[config[i]["sku"]],"pageName":"PLP"})
             const stock = res.data.response.getSKUInventoryAndPrice.skuInfo[0].stockLevel != 0
-            Stock.count({store: "CVS", storeID: config[i]["sku"]}, function (err, count){
+            const query = { store: "CVS", storeID: sku }
+            Stock.count(query, function (err, count){
                 if(count == 0){
                     Stock.create({store: "CVS", storeID: sku, isInStock: stock})
                 }
                 else{
-                    Stock.findOneAndUpdate({store: "CVS", storeID: sku}, {isInStock: stock})
+                    Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
                 }
               })
               const embed = new MessageBuilder()
