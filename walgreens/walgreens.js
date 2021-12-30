@@ -26,19 +26,26 @@ async function walgreens(){
     await page.screenshot({ path: config[i]["url"] + ".png" });
     const date = new Date().toISOString()
     const query = { store: "Walgreens", storeID: config[i]["id"] };
-    const stock = await page.$("text='Out of stock'") == null
+    const s1 = await page.$("text='Out of stock'") == null
+    var s2 = false;
+    if(s1){
+      await page.click("text='Shipping'")
+      await page.click("text='Add for shipping'")
+      await timer(2000)
+      s2 = await page.$("text='View cart'") !== null
+    }
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Walgreens", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"] })
+        Stock.create({store: "Walgreens", storeID: config[i]["id"], isInStock: s2, lastUpdated: date, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"] })
       }
       else{
-        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"]}, {upsert: false}, function(err, doc) {});
+        Stock.findOneAndUpdate(query, {isInStock: s2, lastUpdated: date, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"]}, {upsert: false}, function(err, doc) {});
       }
     })
     await browser.close();
     const embed = new MessageBuilder()
     .setTitle('COVID Test Stock Update')
-    .setDescription('Stock on item :' + config[i]["url"] + " is " + stock)
+    .setDescription('Stock on item :' + config[i]["url"] + " is " + s2)
     .setColor('#00b0f4')
     .setTimestamp();
     hook.send(embed);
@@ -50,3 +57,5 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walgreens()
 }, the_interval);
+
+walgreens()
