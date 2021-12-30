@@ -9,7 +9,6 @@ connection.once('open', () => console.log('DB Connected'))
 connection.on('error', () => console.log('Error with DB'))
 
 const config = JSON.parse(fs.readFileSync('./walgreens/tests.json', 'utf8'))
-console.log(config);
 require('dotenv').config()
 const stores = process.env.storesToRun.toString().toLowerCase();
 
