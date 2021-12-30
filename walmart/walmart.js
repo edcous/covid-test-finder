@@ -22,24 +22,24 @@ async function walmart() {
     const browser = await browserType.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto("https://search.mobile.walmart.com/v1/products-by-code/UPC/" + config[i]["upc"]);
+    await page.goto("https://www.walmart.com/ip/" + config[i]["upc"]);
     await page.screenshot({ path: config[i]["upc"] + ".png" });
-    const c = await page.content()
-    const d = JSON.parse(c.replace("</pre></body></html>", "").replace('<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">', ""))
+    const stock = await page.$("text='Add to cart'") !== null
+    console.log(stock)
     const date = new Date().toISOString()
-    const query = { store: "Walmart", storeID: config[i]["upc"] };
+    const query = { store: "Walmart", storeID: config[i]["upc"].split('/')[1] };
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Walmart", storeID: config[i]["upc"], isInStock: d.data.online.inventory.available, lastUpdated: date})
+        Stock.create({store: "Walmart", storeID: config[i]["upc"].split('/')[1], isInStock: stock, lastUpdated: date, purchaseLink: "https://www.walmart.com/ip/" + config[i]["upc"]})
       }
       else{
-        Stock.findOneAndUpdate(query, {isInStock: d.data.online.inventory.available, lastUpdated: date}, {upsert: false}, function(err, doc) {});
+        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, purchaseLink: "https://www.walmart.com/ip/" + config[i]["upc"]}, {upsert: false}, function(err, doc) {});
       }
     })
     await browser.close();
     const embed = new MessageBuilder()
     .setTitle('COVID Test Stock Update')
-    .setDescription('Stock on item :' + d.data.common.name + " is " + d.data.online.inventory.available)
+    .setDescription('Stock on item :' + config[i]["brand"] + " is " + stock)
     .setColor('#00b0f4')
     .setTimestamp();
     hook.send(embed);
@@ -52,3 +52,5 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walmart()
 }, the_interval);
+
+walmart()
