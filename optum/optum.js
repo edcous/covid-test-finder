@@ -26,15 +26,16 @@ async function optum() {
     await page.screenshot({ path: config[i]["upc"] + ".png" });
     await timer(3000);
     const stock = await page.$("text='Add to Cart'") !== null
+    const price = await page.innerText('[class="product-module--priceTag--1AW8f"]', 'query')    
     console.log(stock)
     const date = new Date().toISOString()
     const query = { store: "Optum", storeID: config[i]["upc"] };
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Optum", storeID: config[i]["upc"], isInStock: stock, lastUpdated: date, purchaseLink: "https://store.optum.com/shop/products/" + config[i]["upc"]})
+        Stock.create({store: "Optum", storeID: config[i]["upc"], isInStock: stock, lastUpdated: date, pricePer: price.replace('$',''), purchaseLink: "https://store.optum.com/shop/products/" + config[i]["upc"]})
       }
       else{
-        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, purchaseLink: "https://store.optum.com/shop/products/" + config[i]["upc"]}, {upsert: false}, function(err, doc) {});
+        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price.replace('$',''), purchaseLink: "https://store.optum.com/shop/products/" + config[i]["upc"]}, {upsert: false}, function(err, doc) {});
       }
     })
     await browser.close();

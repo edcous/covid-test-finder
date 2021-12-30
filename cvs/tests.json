@@ -1,22 +1,27 @@
 [
     {
         "brand": "BinaxNow",
-        "sku": "550147"
+        "sku": "550147",
+        "url": "abbott-binaxnow-covid-19-antigen-self-test-2-tests-for-serial-testing-prodid-550147"
     },
     {
         "brand": "QuickVue",
-        "sku": "467735"
+        "sku": "467735",
+        "url": "quickvue-at-home-otc-covid-19-2-test-kit-prodid-467735"
     },
     {
         "brand": "FloxFlex",
-        "sku": "823994"
+        "sku": "823994",
+        "url": "flowflex-covid-19-antigen-home-test-prodid-823994"
     },
     {
         "brand": "Ellume",
-        "sku": "701505"
+        "sku": "701505",
+        "url": "ellume-covid-19-home-test-prodid-701505"
     },
     {
         "brand": "Labcorp Pixel",
-        "sku": "3080089"
+        "sku": "3080089",
+        "url": "pixel-by-labcorp-covid-19-pcr-test-home-collection-kit-prodid-3080089"
     }
 ]

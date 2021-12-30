@@ -27,6 +27,9 @@ async function walgreens(){
     const date = new Date().toISOString()
     const query = { store: "Walgreens", storeID: config[i]["id"] };
     const s1 = await page.$("text='Out of stock'") == null
+    const price1 = await page.innerText('[class="product__price"] >> span >> nth=0', 'query')
+    const price2 = await page.innerText('[class="product__price"] >> sup >> nth=1', 'query')
+    const parsedPrice = parseFloat(price1 + '.' + price2)
     var s2 = false;
     if(s1){
       await page.click("text='Shipping'")
@@ -36,10 +39,10 @@ async function walgreens(){
     }
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Walgreens", storeID: config[i]["id"], isInStock: s2, lastUpdated: date, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"] })
+        Stock.create({store: "Walgreens", storeID: config[i]["id"], isInStock: s2, lastUpdated: date, pricePer: parsedPrice, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"] })
       }
       else{
-        Stock.findOneAndUpdate(query, {isInStock: s2, lastUpdated: date, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"]}, {upsert: false}, function(err, doc) {});
+        Stock.findOneAndUpdate(query, {isInStock: s2, lastUpdated: date, pricePer: parsedPrice, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"]}, {upsert: false}, function(err, doc) {});
       }
     })
     await browser.close();
@@ -57,5 +60,3 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walgreens()
 }, the_interval);
-
-walgreens()
