@@ -2,7 +2,7 @@ const playwright = require('playwright');
 const fs = require('fs')
 const timer = ms => new Promise(res => setTimeout(res, ms))
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
-const hook = new Webhook("https://discord.com/api/webhooks/925840818684723260/U-32YKxWInEbxksGxVvfwFTV2drL7JDfuBEkDd3WKtMB0PiZehIengi0bcon3Wsu9QcJ");
+const hook = new Webhook("https://discord.com/api/webhooks/926181147321434115/bC6GKAaJdtZp1zkCZBoRV8ZhhCblc3tAUZJxl9OfLnFiiTHydZkjnoqB1LrKnM2JRfQ3");
 const Stock = require('../models/stock.js')
 const connection = require('../config/db.config.js');
 connection.once('open', () => console.log('DB Connected'))
