@@ -15,6 +15,12 @@ var stockSchema = new mongoose.Schema({
   },
   storeID: {
       type: String
+  },
+  testType: {
+    type: String
+  },
+  lastUpdated: {
+    type: String
   }
 });
 

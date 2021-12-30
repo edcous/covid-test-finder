@@ -21,13 +21,15 @@ var wm_results = [];
         await page.screenshot({ path: config[i]["upc"] + ".png" });
         const c = await page.content()
         const d = JSON.parse(c.replace("</pre></body></html>", "").replace('<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">', ""))
+        const date = new Date().toISOString()
+        const query = { store: "Walmart", storeID: config[i]["upc"] };
         wm_results[i] = {"upc": config[i]["upc"], "stock": d.data.online.inventory.available}
-        Stock.count({store: "Walmart", storeID: config[i]["upc"]}, function (err, count){
+        Stock.count(query, function (err, count){
           if(count == 0){
-            Stock.create({store: "Walmart", storeID: config[i]["upc"], isInStock: d.data.online.inventory.available})
+            Stock.create({store: "Walmart", storeID: config[i]["upc"], isInStock: d.data.online.inventory.available, lastUpdated: date})
           }
           else{
-            Stock.findOneAndUpdate({store: "Walmart", storeID: config[i]["upc"]}, {isInStock: d.data.online.inventory.available})
+            Stock.findOneAndUpdate(query, {isInStock: d.data.online.inventory.available, lastUpdated: date}, {upsert: false}, function(err, doc) {});
           }
         })
         await browser.close();
@@ -41,7 +43,7 @@ var wm_results = [];
       }
       console.log(wm_results)
 })();
-var minutes = 10, the_interval = minutes * 60 * 1000;
+var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   console.log("I am doing my 5 minutes check");
   (async () => {

@@ -2,11 +2,11 @@ const { default: axios } = require('axios');
 const fs = require('fs')
 const Stock = require('../models/stock.js')
 const connection = require('../config/db.config.js');
-const config = JSON.parse(fs.readFileSync('./cvs/tests.json', 'utf8'))
+const config = JSON.parse(fs.readFileSync('./target/tests.json', 'utf8'))
 var minutes = 5, the_interval = minutes * 60 * 1000;
 const timer = ms => new Promise(res => setTimeout(res, ms))
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
-const hook = new Webhook("https://discord.com/api/webhooks/925840857209380885/Cm0_aNfJ_gnuzssYhHJs424NiB_7RqPzR5Cg3AaDfO6qYowAHHZoLUjIqAUQtzh16iOa");
+const hook = new Webhook("https://discord.com/api/webhooks/925941695277834240/EkG605lE55_LXLSX3HfIJVIq46r5bZjBIXv6FthF8cnStKInXEoUmKrL24C8z8qIBr6M");
 connection.once('open', () => console.log('DB Connected'))
 connection.on('error', () => console.log('Error with DB'))
 
@@ -17,12 +17,12 @@ var x;
         const sku = config[i]["sku"]
         const date = new Date().toISOString()
         console.log(sku)
-        const res = await axios.post('https://www.cvs.com/RETAGPV3/OnlineShopService/V2/getSKUInventoryAndPrice', {"request":{"header":{"lineOfBusiness":"RETAIL","appName":"CVS_WEB","apiKey":"a2ff75c6-2da7-4299-929d-d670d827ab4a","channelName":"WEB","deviceToken":"d9708df38d23192e","deviceType":"DESKTOP","responseFormat":"JSON","securityType":"apiKey","source":"CVS_WEB","type":"retleg"}},"skuId":[config[i]["sku"]],"pageName":"PLP"})
-        const stock = res.data.response.getSKUInventoryAndPrice.skuInfo[0].stockLevel != 0
-        const query = { store: "CVS", storeID: sku };
+        const res = await axios.get('https://redsky.target.com/redsky_aggregations/v1/web/pdp_fulfillment_v1?key=ff457966e64d5e877fdbad070f276d18ecec4a01&tcin=' + sku + '&store_id=2255&store_positions_store_id=2255&has_store_positions_store_id=true&zip=63664&state=MO&latitude=37.930&longitude=-90.780&pricing_store_id=2255&has_pricing_store_id=true&is_bot=false')
+        const stock = res.data.data.product.fulfillment.shipping_options.availability_status != "OUT_OF_STOCK"
+        const query = { store: "Target", storeID: sku };
         Stock.count(query, function (err, count){
             if(count == 0){
-                Stock.create({store: "CVS", storeID: sku, isInStock: stock, lastUpdated: date})
+                Stock.create({store: "Target", storeID: sku, isInStock: stock, lastUpdated: date})
             }
             else{
                 Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
@@ -40,17 +40,20 @@ var x;
 
 setInterval(function() {
     (async () => {
+        await timer(2000)
         for (var i = 0; i < config.length; i++) {
             const sku = config[i]["sku"]
+            const date = new Date().toISOString()
             console.log(sku)
-            const res = await axios.post('https://www.cvs.com/RETAGPV3/OnlineShopService/V2/getSKUInventoryAndPrice', {"request":{"header":{"lineOfBusiness":"RETAIL","appName":"CVS_WEB","apiKey":"a2ff75c6-2da7-4299-929d-d670d827ab4a","channelName":"WEB","deviceToken":"d9708df38d23192e","deviceType":"DESKTOP","responseFormat":"JSON","securityType":"apiKey","source":"CVS_WEB","type":"retleg"}},"skuId":[config[i]["sku"]],"pageName":"PLP"})
-            const stock = res.data.response.getSKUInventoryAndPrice.skuInfo[0].stockLevel != 0
-            Stock.count({store: "CVS", storeID: config[i]["sku"]}, function (err, count){
+            const res = await axios.get('https://redsky.target.com/redsky_aggregations/v1/web/pdp_fulfillment_v1?key=ff457966e64d5e877fdbad070f276d18ecec4a01&tcin=' + sku + '&store_id=2255&store_positions_store_id=2255&has_store_positions_store_id=true&zip=63664&state=MO&latitude=37.930&longitude=-90.780&pricing_store_id=2255&has_pricing_store_id=true&is_bot=false')
+            const stock = res.data.data.product.fulfillment.shipping_options.availability_status != "OUT_OF_STOCK"
+            const query = { store: "Target", storeID: sku };
+            Stock.count(query, function (err, count){
                 if(count == 0){
-                    Stock.create({store: "CVS", storeID: sku, isInStock: stock})
+                    Stock.create({store: "Target", storeID: sku, isInStock: stock, lastUpdated: date})
                 }
                 else{
-                    Stock.findOneAndUpdate({store: "CVS", storeID: sku}, {isInStock: stock})
+                    Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
                 }
               })
               const embed = new MessageBuilder()
@@ -58,7 +61,7 @@ setInterval(function() {
               .setDescription('Stock on item :' + config[i]["brand"] + " is " + stock)
               .setColor('#00b0f4')
               .setTimestamp();
-              hook.send(embed);      
+              hook.send(embed);
               await timer(5000)
         }
     })();
