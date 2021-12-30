@@ -16,4 +16,4 @@ COPY . .
 
 RUN npm install -g concurrently
 
-CMD concurrently "node ./cvs/cvs.js" "node ./walmart/walmart.js" "node ./target/target.js" "node ./walgreens/walgreens.js"
+CMD concurrently "node ./cvs/cvs.js" "node ./walmart/walmart.js" "node ./target/target.js" "node ./walgreens/walgreens.js" "node ./optum/optum.js"

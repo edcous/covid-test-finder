@@ -1,14 +1,18 @@
 [
     {
         "brand": "BinaxNOW",
-        "upc": "811877011408"
+        "upc": "abbott-covid-19-antigen-self-test"
     },
     {
         "brand": "QuickVue",
-        "upc": "014613339723"
+        "upc": "quickvue-otc-covid-test"
     },
     {
         "brand": "Lucira",
-        "upc": "810055970049"
+        "upc": "lucira-checkit-molecular-covid19-athome-test"
+    },
+    {
+        "brand": "On/Go",
+        "upc": "ongo-10-minute-covid19-antigen-selftest"
     }
 ]
