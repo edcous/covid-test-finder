@@ -25,7 +25,7 @@ async function walmart() {
     await page.goto("https://www.walmart.com/ip/" + config[i]["upc"]);
     await page.screenshot({ path: config[i]["upc"] + ".png" });
     const stock = await page.$("text='Add to cart'") !== null
-    const price = await page.innerText('[itemprop="price"]', 'query').replace
+    const price = await page.innerText('[itemprop="price"]', 'query')
     console.log(stock)
     const date = new Date().toISOString()
     const query = { store: "Walmart", storeID: config[i]["upc"].split('/')[1] };
