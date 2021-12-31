@@ -8,14 +8,21 @@ const connection = require('../config/db.config.js');
 connection.once('open', () => console.log('DB Connected'))
 connection.on('error', () => console.log('Error with DB'))
 
-const config = JSON.parse(fs.readFileSync('./walmart/tests.json', 'utf8'))
+const config1 = JSON.parse(fs.readFileSync('./walmart/tests.json', 'utf8'))
+var config = [];
 require('dotenv').config()
 const stores = process.env.storesToRun.toString().toLowerCase();
-
 if(!stores.includes('walmart')){
     process.exit()
 }
-
+if(stores.includes('walmart1')){
+  config.push(config1[0])
+  config.push(config1[1])
+}
+if(stores.includes('walmart2')){
+  config.push(config1[2])
+  config.push(config1[3])
+}
 async function walmart() {
   for (var i = 0; i < config.length; i++) {
     const browserType = playwright.webkit
