@@ -28,17 +28,14 @@ async function cvs(){
             const browser = await browserType.launch({});
             const context = await browser.newContext();
             const page = await context.newPage();
-            await page.goto("https://www.cvs.com/shop/" + config[i]["url"]);
-            await timer(3000);
-            const price = await page.innerText('[class="css-901oao r-1khnkhu r-1jn44m2 r-3i2nvb r-vw2c0b r-1b7u577"]', 'query')
             const query = { store: "CVS", storeID: sku }
             await browser.close();
             Stock.count(query, function (err, count){
                 if(count == 0){
-                    Stock.create({store: "CVS", storeID: sku, isInStock: stock, pricePer: price.replace('$','')})
+                    Stock.create({store: "CVS", storeID: sku, isInStock: stock})
                 }
                 else{
-                    Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price.replace('$','')}, {upsert: false}, function(err, doc) {});
+                    Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
                 }
               })
               const embed = new MessageBuilder()
@@ -54,3 +51,5 @@ async function cvs(){
 setInterval(function() {
     cvs()
 }, the_interval);
+
+cvs()
