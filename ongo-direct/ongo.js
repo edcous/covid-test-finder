@@ -4,7 +4,7 @@ const connection = require('../config/db.config.js');
 connection.once('open', () => console.log('DB Connected'))
 connection.on('error', () => console.log('Error with DB'))
 var minutes = 5, the_interval = minutes * 60 * 1000;
-
+const stores = process.env.storesToRun.toString().toLowerCase();
 var headers = {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
