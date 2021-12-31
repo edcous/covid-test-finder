@@ -19,7 +19,7 @@ if(!stores.includes('walgreens')){
 async function walgreens(){
   for (var i = 0; i < config.length; i++) {
     const browserType = playwright.webkit
-    const browser = await browserType.launch({headless:false});
+    const browser = await browserType.launch({});
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.walgreens.com/store/c/" + config[i]["url"]);
