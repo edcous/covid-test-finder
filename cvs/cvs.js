@@ -46,10 +46,12 @@ async function cvs(){
               .setColor('#00b0f4')
               .setTimestamp();
               hook.send(embed);      
-              await timer(5000)
+              await timer(7000)
         }
 }
 
 setInterval(function() {
     cvs()
 }, the_interval);
+
+cvs()
