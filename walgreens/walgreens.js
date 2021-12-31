@@ -54,7 +54,7 @@ async function walgreens(){
     .setColor('#00b0f4')
     .setTimestamp();
     hook.send(embed);
-    await timer(5000);
+    await timer(10000);
   }
 }
 
