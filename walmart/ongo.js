@@ -22,13 +22,14 @@ if(!stores.includes('ongo')){
 async function walmart() {
     for (var i = 0; i < config.length; i++) {
       const browserType = playwright.webkit
-      const browser = await browserType.launch({});
+      const browser = await browserType.launch({headless:false});
       const context = await browser.newContext();
       const page = await context.newPage();
       await page.goto("https://www.walmart.com/ip/" + config[i]["upc"]);
       await page.screenshot({ path: config[i]["upc"] + ".png" });
       const stock = await page.$("text='Add to cart'") !== null
       const price = await page.innerText('[itemprop="price"]', 'query')
+      console.log(price)
       console.log(stock)
       const date = new Date().toISOString()
       const query = { store: "Walmart", storeID: config[i]["upc"].split('/')[1] };
@@ -55,4 +56,3 @@ async function walmart() {
 setInterval(function() {
   walmart()
 }, the_interval);
-  
