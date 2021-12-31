@@ -47,10 +47,11 @@ async function walmart() {
       .setColor('#00b0f4')
       .setTimestamp();
       hook.send(embed);
+      await timer(90000)
     }
   }
 
-  var minutes = 5, the_interval = minutes * 60 * 1000;
+  var minutes = 7, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walmart()
 }, the_interval);
