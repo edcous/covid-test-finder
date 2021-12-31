@@ -55,5 +55,3 @@ async function walmart() {
 setInterval(function() {
   walmart()
 }, the_interval);
-
-walmart()
