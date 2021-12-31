@@ -30,7 +30,7 @@ var options = {
     body: dataString
 };
 
-if(!stores.includes('ongodirect')){
+if(!stores.includes('direct-o-n-g-o')){
     process.exit()
 }
 
