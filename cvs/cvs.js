@@ -25,7 +25,7 @@ async function cvs(){
             const res = await axios.post('https://www.cvs.com/RETAGPV3/OnlineShopService/V2/getSKUInventoryAndPrice', {"request":{"header":{"lineOfBusiness":"RETAIL","appName":"CVS_WEB","apiKey":"a2ff75c6-2da7-4299-929d-d670d827ab4a","channelName":"WEB","deviceToken":"d9708df38d23192e","deviceType":"DESKTOP","responseFormat":"JSON","securityType":"apiKey","source":"CVS_WEB","type":"retleg"}},"skuId":[config[i]["sku"]],"pageName":"PLP"})
             const stock = res.data.response.getSKUInventoryAndPrice.skuInfo[0].stockLevel != 0
             const browserType = playwright.webkit
-            const browser = await browserType.launch({headless:false});
+            const browser = await browserType.launch({});
             const context = await browser.newContext();
             const page = await context.newPage();
             await page.goto("https://www.cvs.com/shop/" + config[i]["url"]);
@@ -54,5 +54,3 @@ async function cvs(){
 setInterval(function() {
     cvs()
 }, the_interval);
-
-cvs()
