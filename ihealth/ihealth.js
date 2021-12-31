@@ -47,5 +47,3 @@ async function ihealth(){
 setInterval(function() {
     ihealth()
 }, the_interval);
-
-ihealth()
