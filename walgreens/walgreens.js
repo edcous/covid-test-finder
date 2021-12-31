@@ -19,7 +19,7 @@ if(!stores.includes('walgreens')){
 async function walgreens(){
   for (var i = 0; i < config.length; i++) {
     const browserType = playwright.webkit
-    const browser = await browserType.launch({});
+    const browser = await browserType.launch({headless:false});
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.walgreens.com/store/c/" + config[i]["url"]);
@@ -32,8 +32,10 @@ async function walgreens(){
     const parsedPrice = parseFloat(price1 + '.' + price2)
     var s2 = false;
     if(s1){
-      await page.click("text='Shipping'")
-      await page.click("text='Add for shipping'")
+      if(await page.$('[class="product-ship"]') == null){
+        await page.click('[id="wag-shipping-tab"]')
+      }
+      await page.click('[aria-label="Add to cart for shipping. Opens simulated dialog."]')
       await timer(2000)
       s2 = await page.$("text='View cart'") !== null
     }
@@ -60,3 +62,4 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walgreens()
 }, the_interval);
+walgreens()

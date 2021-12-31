@@ -44,7 +44,7 @@ async function walmart() {
     .setColor('#00b0f4')
     .setTimestamp();
     hook.send(embed);
-    await timer(15000);
+    await timer(30000);
   }
 }
 
