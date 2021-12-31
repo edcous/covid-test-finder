@@ -44,7 +44,7 @@ async function cvs(){
               .setColor('#00b0f4')
               .setTimestamp();
               hook.send(embed);      
-              await timer(60000)
+              await timer(15000)
         }
 }
 
