@@ -26,7 +26,7 @@ async function walmart() {
       const page = await context.newPage();
       await page.goto("https://www.walmart.com/ip/" + config[i]["upc"]);
       await page.screenshot({ path: config[i]["upc"] + ".png" });
-      const stock = await page.$("text='Add to cart'") !== null
+      const stock = await page.$("text='Add to cart'") !== null && await page.$("text='Shipping, '") !== null
       const price = await page.innerText('[itemprop="price"]', 'query')
       console.log(price)
       console.log(stock)
@@ -47,7 +47,6 @@ async function walmart() {
       .setColor('#00b0f4')
       .setTimestamp();
       hook.send(embed);
-      await timer(60000);
     }
   }
 
@@ -55,3 +54,5 @@ async function walmart() {
 setInterval(function() {
   walmart()
 }, the_interval);
+
+walmart()
