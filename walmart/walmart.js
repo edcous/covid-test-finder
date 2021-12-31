@@ -28,11 +28,11 @@ async function walmart(){
     const d = JSON.parse(c.replace("</pre></body></html>", "").replace('<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">', ""))
     const stock = d.data.online.inventory.available
     const price = d.data.online.price.priceInCents / 100
-    const query = { store: "Walmart", storeID: config[i]["upc"].split('/')[1] };
+    const query = { store: "Walmart", storeID: config[i]["upc"] };
     const date = new Date().toISOString()
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Walmart", storeID: config[i]["upc"].split('/')[1], isInStock: stock, lastUpdated: date, pricePer: price })
+        Stock.create({store: "Walmart", storeID: config[i]["upc"], isInStock: stock, lastUpdated: date, pricePer: price })
       }
       else{
         Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price }, {upsert: false}, function(err, doc) {});
