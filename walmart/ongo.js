@@ -9,13 +9,53 @@ const connection = require('../config/db.config.js');
 connection.once('open', () => console.log('DB Connected'))
 connection.on('error', () => console.log('Error with DB'))
 const config = []
-config.push({"upc": "On-Go-COVID-19-Antigen-Self-Test-Tech-Enabled-At-Home-Covid-Test-OTC-Results-in-10-Minutes-2-Test-Kit/373165472", "brand": "on/go"})
+config.push({"upc": "On-Go-COVID-19-Antigen-Self-Test-Tech-Enabled-At-Home-Covid-Test-OTC-Results-in-10-Minutes-2-Test-Kit/373165472", "brand": "on/go", "upcActual": "860006191665"})
 
 require('dotenv').config()
 const stores = process.env.storesToRun.toString().toLowerCase();
 
 if(!stores.includes('ongo')){
     process.exit()
+}
+
+async function walmartAPI(){
+  for (var i = 0; i < config.length; i++) {
+    const browserType = playwright.webkit
+    const browser = await browserType.launch();
+    const context = await browser.newContext();
+    const page = await context.newPage();
+    await page.goto("https://search.mobile.walmart.com/v1/products-by-code/UPC/" + config[i]["upcActual"]);
+    await page.screenshot({ path: config[i]["upcActual"] + ".png" });
+    const c = await page.content()
+    const d = JSON.parse(c.replace("</pre></body></html>", "").replace('<html><head></head><body><pre style="word-wrap: break-word; white-space: pre-wrap;">', ""))
+    const stock = d.data.online.inventory.available
+    const price = d.data.online.price.priceInCents / 100
+    const query = { store: "Walmart", storeID: "373165472" };
+    const date = new Date().toISOString()
+    await browser.close();
+    console.log(stock)
+    console.log(price)
+    if(stock){
+      Stock.count(query, function (err, count){
+        if(count == 0){
+          Stock.create({store: "Walmart", storeID: "373165472", isInStock: stock, lastUpdated: date, pricePer: price })
+        }
+        else{
+          Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price }, {upsert: false}, function(err, doc) {});
+        }
+      })  
+    }
+    else{
+      walmart()
+    }
+    const embed = new MessageBuilder()
+    .setTitle('COVID Test Stock Update')
+    .setDescription('Stock on item :' + d.data.common.name + " is " + d.data.online.inventory.available)
+    .setColor('#00b0f4')
+    .setTimestamp();
+    hook.send(embed);
+    await timer(5000);
+  }
 }
 
 
@@ -54,5 +94,7 @@ async function walmart() {
 
   var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
-  walmart()
+  walmartAPI()
 }, the_interval);
+
+walmartAPI()
