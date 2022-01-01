@@ -18,7 +18,6 @@ if(!stores.includes('sams')){
 }
 
 async function sams(){
-    await timer(2000)
     for (var i = 0; i < config.length; i++) {
         const sku = config[i]["sku"]
         const date = new Date().toISOString()
@@ -43,6 +42,7 @@ async function sams(){
           .setColor('#00b0f4')
           .setTimestamp();
           hook.send(embed);
+          await timer(15000)
     }
 }
 
