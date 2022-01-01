@@ -13,7 +13,7 @@ connection.on('error', () => console.log('Error with DB'))
 require('dotenv').config()
 const stores = process.env.storesToRun.toString().toLowerCase();
 
-if(!stores.includes('target')){
+if(!stores.includes('sams')){
     process.exit()
 }
 
