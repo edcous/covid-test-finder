@@ -2,7 +2,7 @@ const { default: axios } = require('axios');
 const fs = require('fs')
 const Stock = require('../models/stock.js')
 const connection = require('../config/db.config.js');
-const config = JSON.parse(fs.readFileSync('./sams/tests.json', 'utf8'))
+var config = []
 var minutes = 10, the_interval = minutes * 60 * 1000;
 const timer = ms => new Promise(res => setTimeout(res, ms))
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
@@ -15,6 +15,13 @@ const stores = process.env.storesToRun.toString().toLowerCase();
 
 if(!stores.includes('sams')){
     process.exit()
+}
+
+if(stores == 'sams1'){
+    config.push({"sku": "prod25201058","name": "sams flu + covid combo"})
+}
+else{
+    config.push({"sku": "prod25790850","name": "binax now"})
 }
 
 async function sams(){
@@ -42,7 +49,6 @@ async function sams(){
           .setColor('#00b0f4')
           .setTimestamp();
           hook.send(embed);
-          await timer(60000 * 5)
     }
 }
 
