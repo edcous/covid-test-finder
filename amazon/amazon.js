@@ -19,22 +19,30 @@ if(!stores.includes('amazon')){
 async function amazon() {
   for (var i = 0; i < config.length; i++) {
     const browserType = playwright.firefox
-    const browser = await browserType.launch({headless:false});
+    const browser = await browserType.launch({});
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.amazon.com/dp/" + config[i]["id"]);
     await timer(5000);
     const stock = await page.$('[id="add-to-cart-button"]') !== null
-    const price = await page.innerText('[class="a-price-whole"]', 'query') + '.' + await page.innerText('[class="a-price-decimal"]', 'query')
-    console.log(stock)
+    var price;
+    if(stock){
+        price = await page.innerText('[class="a-offscreen"]')
+    }
     const date = new Date().toISOString()
     const query = { store: "Amazon", storeID: config[i]["id"] };
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: price.replace('$',''), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
+        Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: parseInt(price), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
       }
       else{
-        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price.replace('$','')}, {upsert: false}, function(err, doc) {});
+            if(!stock){
+                Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
+            }
+            else{
+                Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price.replace('$','')}, {upsert: false}, function(err, doc) {});
+            }
+            console.log(price)
       }
     })
     await browser.close();
