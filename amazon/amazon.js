@@ -34,7 +34,7 @@ async function amazon() {
         Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: price.replace('$',''), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
       }
       else{
-        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price.replace('$',''), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]}, {upsert: false}, function(err, doc) {});
+        Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price.replace('$','')}, {upsert: false}, function(err, doc) {});
       }
     })
     await browser.close();
