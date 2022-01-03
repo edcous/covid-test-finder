@@ -20,9 +20,9 @@ async function costco() {
     const browser = await browserType.launch();
     const context = await browser.newContext();
     const page = await context.newPage();
-    await page.goto("https://www.costco.com/flowflex-at-home-covid-test-kit,-5-test-pack.product.100825502.html");
+    await page.goto("https://www.costco.com/covid-19-saliva-pcr-test-kit-voucher-with-video-observation-for-travel%2c-redeemed-by-azova.product.100706659.html");
     await timer(3000);
-    const stock = await page.$("text='Add to cart'") !== null
+    const stock = await page.$("text='Add to Cart'") !== null
     console.log(stock)
     const date = new Date().toISOString()
     const query = { store: "Costco", storeID: '100825502'};
