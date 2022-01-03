@@ -19,13 +19,13 @@ if(!stores.includes('amazon')){
 async function amazon() {
   for (var i = 0; i < config.length; i++) {
     const browserType = playwright.firefox
-    const browser = await browserType.launch();
+    const browser = await browserType.launch({headless:false});
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.amazon.com/dp/" + config[i]["id"]);
     await timer(5000);
-    const stock = await page.$("text='Add to Cart'") !== null
-    const price = await page.innerText('[class="a-offscreen"]', 'query')    
+    const stock = await page.$('[id="add-to-cart-button"]') !== null
+    const price = await page.innerText('[class="a-price-whole"]', 'query') + '.' + await page.innerText('[class="a-price-decimal"]', 'query')
     console.log(stock)
     const date = new Date().toISOString()
     const query = { store: "Amazon", storeID: config[i]["id"] };
