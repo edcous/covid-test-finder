@@ -25,7 +25,7 @@ async function walmart() {
       const context = await browser.newContext();
       const page = await context.newPage();
       await page.goto("https://www.walmart.com/ip/" + config[i]["upc"]);
-      await page.screenshot({ path: config[i]["upc"] + ".png" });
+      await page.screenshot({ path: './' + config[i]["upc"].split('/')[1] + ".png" });
       const stock = await page.$("text='Add to cart'") !== null && await page.$("text='Shipping, '") !== null
       const price = await page.innerText('[itemprop="price"]', 'query')
       console.log(price)
@@ -47,6 +47,7 @@ async function walmart() {
       .setColor('#00b0f4')
       .setTimestamp();
       hook.send(embed);
+      hook.sendFile('./' + config[i]["upc"].split('/')[1] + '.png');
       await timer(90000)
     }
   }
