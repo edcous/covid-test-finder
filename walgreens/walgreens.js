@@ -23,7 +23,6 @@ async function walgreens(){
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://www.walgreens.com/store/c/" + config[i]["url"]);
-    await page.screenshot({ path: config[i]["url"] + ".png" });
     const date = new Date().toISOString()
     const query = { store: "Walgreens", storeID: config[i]["id"] };
     const s1 = await page.$("text='Out of stock'") == null
@@ -39,6 +38,7 @@ async function walgreens(){
       await timer(2000)
       s2 = await page.$("text='View cart'") !== null
     }
+    await page.screenshot({ path: './' + config[i]["url"].split('/')[1] + ".png" });
     Stock.count(query, function (err, count){
       if(count == 0){
         Stock.create({store: "Walgreens", storeID: config[i]["id"], isInStock: s2, lastUpdated: date, pricePer: parsedPrice, purchaseLink: "https://www.walgreens.com/store/c/" + config[i]["url"] })
@@ -54,6 +54,7 @@ async function walgreens(){
     .setColor('#00b0f4')
     .setTimestamp();
     hook.send(embed);
+    hook.sendFile('./' + config[i]["url"].split('/')[1] + ".png")
     await timer(10000);
   }
 }
