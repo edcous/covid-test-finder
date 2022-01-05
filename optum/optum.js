@@ -55,5 +55,3 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   optum()
 }, the_interval);
-
-optum()
