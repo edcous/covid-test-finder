@@ -26,7 +26,7 @@ async function walmart() {
       const page = await context.newPage();
       await page.goto("https://www.walmart.com/ip/" + config[i]["upc"]);
       await page.screenshot({ path: './' + config[i]["upc"].split('/')[1] + ".png" });
-      const stock = await page.$("text='Add to cart'") !== null && await page.$("text='Shipping, '") !== null
+      const stock = await page.$("text='Add to cart'") !== null && (await page.$("text='Shipping, '") !== null || await page.$("text='Free shipping, '") !== null)
       const price = await page.innerText('[itemprop="price"]', 'query')
       console.log(price)
       console.log(stock)
