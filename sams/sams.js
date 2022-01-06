@@ -20,8 +20,11 @@ if(!stores.includes('sams')){
 if(stores == 'sams1'){
     config.push({"sku": "prod25201058","name": "sams flu + covid combo"})
 }
-else{
+else if(stores == 'sams2'){
     config.push({"sku": "prod25790850","name": "binax now"})
+}
+else{
+    config.push({"sku": "prod26491910","name": "on/go"})
 }
 
 async function sams(){
