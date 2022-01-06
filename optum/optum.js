@@ -23,7 +23,7 @@ async function optum() {
     const context = await browser.newContext();
     const page = await context.newPage();
     await page.goto("https://store.optum.com/shop/products/" + config[i]["upc"]);
-    await timer(7500);
+    await timer(15000);
     await page.screenshot({ path: './' + config[i]["upc"] + ".png" });
     const stock = await page.$("text='Add to Cart'") !== null
     const price = await page.innerText('[class="product-module--priceTag--1AW8f"]', 'query')    
@@ -46,7 +46,7 @@ async function optum() {
     .setTimestamp();
     hook.send(embed);
     hook.sendFile('./' + config[i]["upc"] + ".png")
-    await timer(5000);
+    await timer(10000);
   }
 }
 
