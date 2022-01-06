@@ -31,6 +31,7 @@ async function amazon() {
     }
     const date = new Date().toISOString()
     const query = { store: "Amazon", storeID: config[i]["id"] };
+    await page.screenshot({ path: './' + config[i]["id"] + ".png" });
     Stock.count(query, function (err, count){
       if(count == 0){
         Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: parseInt(price), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
@@ -52,6 +53,7 @@ async function amazon() {
     .setColor('#00b0f4')
     .setTimestamp();
     hook.send(embed);
+    hook.sendFile('./' + config[i]["id"] + ".png")
     await timer(15000);
   }
 }
