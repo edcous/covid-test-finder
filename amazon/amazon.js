@@ -54,11 +54,11 @@ async function amazon() {
     .setTimestamp();
     hook.send(embed);
     hook.sendFile('./' + config[i]["id"] + ".png")
-    await timer(60000);
+    await timer(120000);
   }
 }
 
-var minutes = 5, the_interval = minutes * 60 * 1000;
+var minutes = 10, the_interval = minutes * 60 * 1000;
 
 setInterval(function() {
   amazon()
