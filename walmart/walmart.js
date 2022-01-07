@@ -48,11 +48,11 @@ async function walmart() {
       .setTimestamp();
       hook.send(embed);
       hook.sendFile('./' + config[i]["upc"].split('/')[1] + '.png');
-      await timer(90000)
+      await timer(70000)
     }
   }
 
-  var minutes = 7, the_interval = minutes * 60 * 1000;
+  var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walmart()
 }, the_interval);
