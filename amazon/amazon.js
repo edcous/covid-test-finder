@@ -18,7 +18,7 @@ if(!stores.includes('amazon')){
 
 async function amazon() {
   for (var i = 0; i < config.length; i++) {
-    const browserType = playwright.webkit
+    const browserType = playwright.firefox
     const browser = await browserType.launch({});
     const context = await browser.newContext();
     const page = await context.newPage();
