@@ -18,7 +18,7 @@ if(!stores.includes('amazon')){
 
 async function amazon() {
   for (var i = 0; i < config.length; i++) {
-    const browserType = playwright.firefox
+    const browserType = playwright.webkit
     const browser = await browserType.launch({});
     const context = await browser.newContext();
     const page = await context.newPage();
@@ -54,7 +54,7 @@ async function amazon() {
     .setTimestamp();
     hook.send(embed);
     hook.sendFile('./' + config[i]["id"] + ".png")
-    await timer(15000);
+    await timer(60000);
   }
 }
 
