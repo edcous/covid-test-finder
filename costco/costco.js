@@ -26,6 +26,7 @@ async function costco() {
     console.log(stock)
     const date = new Date().toISOString()
     const query = { store: "Costco", storeID: '100825502'};
+    await page.screenshot({ path: './' + 'c-f-c' + ".png" });
     Stock.count(query, function (err, count){
       if(count == 0){
         Stock.create({store: "Costco", storeID: '100825502', isInStock: stock, lastUpdated: date})
@@ -41,6 +42,7 @@ async function costco() {
     .setColor('#00b0f4')
     .setTimestamp();
     hook.send(embed);
+    hook.sendFile('./' + 'c-f-c' + ".png")
 }
 
 var minutes = 5, the_interval = minutes * 60 * 1000;
