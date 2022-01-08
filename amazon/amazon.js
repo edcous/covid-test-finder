@@ -21,7 +21,7 @@ if(!stores.includes('amazon')){
 
 async function amazon() {
   for (var i = 0; i < config.length; i++) {
-      const browser = await puppeteer.launch({ headless: true })
+      const browser = await puppeteer.launch({ headless: true, args: ['--no-sandbox', '--disable-setuid-sandbox']})
       const page = await browser.newPage()
       await page.setViewport({ width: 1000, height: 600 })
       const cookiesString = await fs.readFileSync('./cookies.json');
