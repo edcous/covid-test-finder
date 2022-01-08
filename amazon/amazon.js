@@ -33,6 +33,12 @@ async function amazon() {
       const date = new Date().toISOString()
       const query = { store: "Amazon", storeID: config[i]["id"] };
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
+      var price;
+      if(stock){
+        price =  await page.$eval('.a-offscreen', el => el.innerText);
+        price = price.replace('$','')
+        console.log(price)
+      }
       Stock.count(query, function (err, count){
         if(count == 0){
           Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: parseInt(price), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
@@ -42,7 +48,7 @@ async function amazon() {
                   Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
               }
               else{
-                  Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
+                  Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date, pricePer: price}, {upsert: false}, function(err, doc) {});
               }
         }
       })
