@@ -1,0 +1,18 @@
+[
+    {
+        "brand": "EmpowerDX",
+        "upc": "rite-aid-empowerdx-home-covid-19-test-kit"
+    },
+    {
+        "brand": "FlowFlex",
+        "upc": "flowflex-covid-19-antigen-home-test-1-ct"
+    },
+    {
+        "brand": "Access Bio Carestart",
+        "upc": "carestart-covid-19-antigen-home-test-kit-2-ct"
+    },
+    {
+        "brand": "BinaxNow",
+        "upc": "binaxnow-covid-19-antigen-self-tests-2-ct"
+    }
+]
