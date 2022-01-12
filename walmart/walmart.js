@@ -25,7 +25,7 @@ if(stores.includes('walmart')){
 async function walmart() {
     if(config.length=1){
       const browserType = playwright.webkit
-      const browser = await browserType.launch({headless:false});
+      const browser = await browserType.launch();
       const context = await browser.newContext();
       const page = await context.newPage();
       await page.goto("https://www.walmart.com/ip/" + config["upc"]);
