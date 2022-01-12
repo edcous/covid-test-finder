@@ -32,10 +32,10 @@ async function ra() {
     }
     console.log(stock)
     const date = new Date().toISOString()
-    const query = { store: "Rite Aid", storeID: config[i]["upc"] };
+    const query = { store: "RiteAid", storeID: config[i]["upc"] };
     Stock.count(query, function (err, count){
       if(count == 0){
-        Stock.create({store: "Rite Aid", storeID: config[i]["upc"], isInStock: stock, lastUpdated: date, purchaseLink: "https://www.riteaid.com/shop/" + config[i]["upc"]})
+        Stock.create({store: "RiteAid", storeID: config[i]["upc"], isInStock: stock, lastUpdated: date, purchaseLink: "https://www.riteaid.com/shop/" + config[i]["upc"]})
       }
       else{
           if(stock){
