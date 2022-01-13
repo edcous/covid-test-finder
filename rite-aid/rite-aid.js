@@ -25,7 +25,7 @@ async function ra() {
     await page.goto("https://www.riteaid.com/shop/" + config[i]["upc"]);
     await timer(10000);
     await page.screenshot({ path: './' + config[i]["upc"] + ".png" });
-    const stock = await page.$("text='Add to Cart'") !== null
+    const stock = await page.$("text='Not available online'") == null
     var price;
     if(stock){
         price = await page.innerText('[class="price"]', 'query')    
@@ -63,3 +63,5 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   ra()
 }, the_interval);
+
+ra()
