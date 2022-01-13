@@ -63,5 +63,3 @@ var minutes = 5, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   ra()
 }, the_interval);
-
-ra()
