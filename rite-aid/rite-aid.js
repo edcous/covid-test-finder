@@ -25,10 +25,10 @@ async function ra() {
     await page.goto("https://www.riteaid.com/shop/" + config[i]["upc"]);
     await timer(10000);
     await page.screenshot({ path: './' + config[i]["upc"] + ".png" });
-    const stock = await page.$("text='In stock Online'") !== null
+    const stock = await page.$("text='Add to Cart'") !== null
     var price;
     if(stock){
-        const price = await page.innerText('[class="price"]', 'query')    
+        price = await page.innerText('[class="price"]', 'query')    
     }
     console.log(stock)
     const date = new Date().toISOString()
