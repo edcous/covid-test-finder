@@ -34,7 +34,7 @@ async function amazon() {
       const query = { store: "Amazon", storeID: config[i]["id"] };
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
       var price;
-      if(stock){
+      if(stock.includes('$')){
         price =  await page.$eval('.a-offscreen', el => el.innerText);
         price = price.replace('$','')
         console.log(price)
@@ -62,7 +62,7 @@ async function amazon() {
       cookies = await page.cookies();
       await fs.writeFileSync('./cookies.json', JSON.stringify(cookies, null, 2));
       await browser.close();
-      await timer(10000);
+      await timer(120000);
   }
 }
 
@@ -71,5 +71,3 @@ var minutes = 10, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   amazon()
 }, the_interval);
-
-amazon()
