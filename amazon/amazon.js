@@ -34,7 +34,7 @@ async function amazon() {
       const query = { store: "Amazon", storeID: config[i]["id"] };
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
       var price;
-      if(stock.includes('$')){
+      if(price.includes('$')){
         price =  await page.$eval('.a-offscreen', el => el.innerText);
         price = price.replace('$','')
         console.log(price)
