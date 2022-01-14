@@ -29,7 +29,7 @@ async function amazon() {
       await page.setCookie(...cookies);
       await page.goto("https://www.amazon.com/dp/" + config[i]["id"]);
       await timer(5000);
-      const stock = await page.$('[id="add-to-cart-button"]') !== null
+      const stock = await page.$('[id="add-to-cart-button"]') !== null || await page.$('[title="See All Buying Options"]') !== null
       const date = new Date().toISOString()
       const query = { store: "Amazon", storeID: config[i]["id"] };
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
@@ -62,7 +62,7 @@ async function amazon() {
       cookies = await page.cookies();
       await fs.writeFileSync('./cookies.json', JSON.stringify(cookies, null, 2));
       await browser.close();
-      await timer(120000);
+      await timer(10000);
   }
 }
 
@@ -71,3 +71,5 @@ var minutes = 10, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   amazon()
 }, the_interval);
+
+amazon()
