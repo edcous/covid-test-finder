@@ -35,11 +35,11 @@ async function amazon() {
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
       var price;
       const atc = await page.$('[id="add-to-cart-button"]') !== null
-      if(await page.$('[id="add-to-cart-button"]') !== null){
+      if(atc){
         price =  await page.$eval('.a-offscreen', el => el.innerText);
         price = price.replace('$','')
-        console.log(price)
       }
+      console.log('updating')
       Stock.count(query, function (err, count){
         if(count == 0){
           Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: parseInt(price), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
@@ -63,7 +63,7 @@ async function amazon() {
       cookies = await page.cookies();
       await fs.writeFileSync('./cookies.json', JSON.stringify(cookies, null, 2));
       await browser.close();
-      await timer(60000);
+      await timer(45000);
   }
 }
 
