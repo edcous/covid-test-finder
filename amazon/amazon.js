@@ -34,6 +34,7 @@ async function amazon() {
       const query = { store: "Amazon", storeID: config[i]["id"] };
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
       var price;
+      const atc = await page.$('[id="add-to-cart-button"]') !== null
       if(await page.$('[id="add-to-cart-button"]') !== null){
         price =  await page.$eval('.a-offscreen', el => el.innerText);
         price = price.replace('$','')
@@ -44,7 +45,7 @@ async function amazon() {
           Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: parseInt(price), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
         }
         else{
-              if(await page.$('[id="add-to-cart-button"]') == null){
+              if(!atc){
                   Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
               }
               else{
