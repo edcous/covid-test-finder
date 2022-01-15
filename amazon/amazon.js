@@ -44,7 +44,7 @@ async function amazon() {
           Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: parseInt(price), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
         }
         else{
-              if(!stock){
+              if(await page.$('[id="add-to-cart-button"]') == null){
                   Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
               }
               else{
