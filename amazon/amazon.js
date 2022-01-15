@@ -34,8 +34,7 @@ async function amazon() {
       const query = { store: "Amazon", storeID: config[i]["id"] };
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
       var price;
-      const atc = await page.$('[id="add-to-cart-button"]') !== null
-      if(atc){
+      if(stock){
         price =  await page.$eval('.a-offscreen', el => el.innerText);
         price = price.replace('$','')
       }
@@ -45,7 +44,7 @@ async function amazon() {
           Stock.create({store: "Amazon", storeID: config[i]["id"], isInStock: stock, lastUpdated: date, pricePer: parseInt(price), purchaseLink: "https://www.amazon.com/dp/" + config[i]["id"]})
         }
         else{
-              if(!atc){
+              if(!stock){
                   Stock.findOneAndUpdate(query, {isInStock: stock, lastUpdated: date}, {upsert: false}, function(err, doc) {});
               }
               else{
@@ -63,11 +62,7 @@ async function amazon() {
       cookies = await page.cookies();
       await fs.writeFileSync('./cookies.json', JSON.stringify(cookies, null, 2));
       await browser.close();
-<<<<<<< HEAD
-      await timer(45000);
-=======
       await timer(120000);
->>>>>>> parent of 4f8b63c (Update amazon.js)
   }
 }
 
