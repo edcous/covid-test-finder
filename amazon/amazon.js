@@ -29,7 +29,7 @@ async function amazon() {
       await page.setCookie(...cookies);
       await page.goto("https://www.amazon.com/dp/" + config[i]["id"]);
       await timer(5000);
-      const stock = await page.$('[id="add-to-cart-button"]') !== null || await page.$('[title="See All Buying Options"]') !== null
+      const stock = await page.$('[id="add-to-cart-button"]') !== null
       const date = new Date().toISOString()
       const query = { store: "Amazon", storeID: config[i]["id"] };
       await page.screenshot({ path: './' + config[i]["id"] + ".png" });
@@ -63,7 +63,11 @@ async function amazon() {
       cookies = await page.cookies();
       await fs.writeFileSync('./cookies.json', JSON.stringify(cookies, null, 2));
       await browser.close();
+<<<<<<< HEAD
       await timer(45000);
+=======
+      await timer(120000);
+>>>>>>> parent of 4f8b63c (Update amazon.js)
   }
 }
 
