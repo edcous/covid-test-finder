@@ -63,11 +63,11 @@ async function amazon() {
       cookies = await page.cookies();
       await fs.writeFileSync('./cookies.json', JSON.stringify(cookies, null, 2));
       await browser.close();
-      await timer(120000);
+      await timer(60000);
   }
 }
 
-var minutes = 10, the_interval = minutes * 60 * 1000;
+var minutes = 5, the_interval = minutes * 60 * 1000;
 
 setInterval(function() {
   amazon()
