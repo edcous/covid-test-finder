@@ -55,5 +55,3 @@ async function cvs(){
 setInterval(function() {
     cvs()
 }, the_interval);
-
-cvs()
