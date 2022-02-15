@@ -23,5 +23,20 @@
         "brand": "Labcorp Pixel",
         "sku": "3080089",
         "url": "pixel-by-labcorp-covid-19-pcr-test-home-collection-kit-prodid-3080089"
+    },
+    {
+        "brand": "iHealth",
+        "sku": "432457",
+        "url": "ihealth-covid-19-antigen-rapid-test-2-tests-per-pack-prodid-432457" 
+    },
+    {
+        "brand": "bd",
+        "sku": "199716",
+        "url": "bd-veritor-at-home-covid-19-test-kit-2-ct-prodid-199716" 
+    },
+    {
+        "brand": "carestart",
+        "sku": "475504",
+        "url": "carestart-covid-19-antigen-home-test-kit-2-ct-prodid-475504" 
     }
 ]
