@@ -48,10 +48,12 @@ async function cvs(){
               .setTimestamp();
               hook.sendFile('./' + 'c-f-c' + ".png")          
               hook.send(embed);
-              await timer(60*1000*5)
+              await timer(process.env.minutes)
         }
 }
 
 setInterval(function() {
     cvs()
 }, the_interval);
+
+cvs()
