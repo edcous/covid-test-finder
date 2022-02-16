@@ -29,7 +29,7 @@ async function cvs(){
             await page.goto("https://www.cvs.com/shop/" + config[i]["url"]);
             await timer(3000);
             const price = await page.innerText('[class="css-901oao r-1khnkhu r-1jn44m2 r-3i2nvb r-vw2c0b r-1b7u577"]', 'query')
-            const stock = await page.$("text='Eligible for 1-4 day shipping'") !== null
+            const stock = await page.$("text='Eligible for 1-4 day shipping'") !== null || await page.$("text='Free shipping on $35+ orders'") !== null
             const query = { store: "CVS", storeID: sku }
             await page.screenshot({ path: './' + 'c-f-c' + ".png" });
             await browser.close();
