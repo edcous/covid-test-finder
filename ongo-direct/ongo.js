@@ -3,7 +3,7 @@ const Stock = require('../models/stock.js')
 const connection = require('../config/db.config.js');
 connection.once('open', () => console.log('DB Connected'))
 connection.on('error', () => console.log('Error with DB'))
-var minutes = 10, the_interval = minutes * 60 * 1000;
+var minutes = 120, the_interval = minutes * 60 * 1000;
 const stores = process.env.storesToRun.toString().toLowerCase();
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const hook = new Webhook("https://discord.com/api/webhooks/926558232837754931/mMfslkWyJM9uTJyWsSpJzolv1gIki2WNKD_gxOnElM-mMKz2pQsP0rj82W8VuIg8kNL8");

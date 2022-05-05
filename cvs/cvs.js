@@ -4,7 +4,7 @@ const fs = require('fs')
 const Stock = require('../models/stock.js')
 const connection = require('../config/db.config.js');
 const config = JSON.parse(fs.readFileSync('./cvs/tests.json', 'utf8'))
-var minutes = 60, the_interval = minutes * 60 * 1000;
+var minutes = 120, the_interval = minutes * 60 * 1000;
 const timer = ms => new Promise(res => setTimeout(res, ms))
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const hook = new Webhook("https://discord.com/api/webhooks/925840857209380885/Cm0_aNfJ_gnuzssYhHJs424NiB_7RqPzR5Cg3AaDfO6qYowAHHZoLUjIqAUQtzh16iOa");

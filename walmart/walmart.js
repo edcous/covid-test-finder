@@ -88,11 +88,7 @@ async function walmart() {
   
     }
 }
-var minutes = 6
-if(process.env.minutes){
-  minutes = parseInt(process.env.minutes)
-}
-var the_interval = minutes * 60 * 1000;
+var minutes = 120, the_interval = minutes * 60 * 1000;
 setInterval(function() {
   walmart()
 }, the_interval);

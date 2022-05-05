@@ -43,7 +43,7 @@ async function ro() {
     hook.send(embed);
 }
 
-var minutes = 5, the_interval = minutes * 60 * 1000;
+var minutes = 120, the_interval = minutes * 60 * 1000;
 
 setInterval(function() {
     ro()

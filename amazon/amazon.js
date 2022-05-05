@@ -66,7 +66,7 @@ async function amazon() {
   }
 }
 
-var minutes = 75, the_interval = minutes * 60 * 1000;
+var minutes = 120, the_interval = minutes * 60 * 1000;
 
 setInterval(function() {
   amazon()

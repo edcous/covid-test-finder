@@ -3,7 +3,7 @@ const fs = require('fs')
 const Stock = require('../models/stock.js')
 const connection = require('../config/db.config.js');
 var config = []
-var minutes = 10, the_interval = minutes * 60 * 1000;
+var minutes = 120, the_interval = minutes * 60 * 1000;
 const timer = ms => new Promise(res => setTimeout(res, ms))
 const { Webhook, MessageBuilder } = require('discord-webhook-node');
 const hook = new Webhook("https://discord.com/api/webhooks/926665385971945483/OE6xbv4G2SD2Wk2pXtaufDbWCBjKIjJ2Bbwpd2_hbTCNwoqnKOSQ4cgXvxh-nBKB8-na");
