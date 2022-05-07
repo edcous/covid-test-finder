@@ -46,7 +46,8 @@ async function target(){
     }
 }
 
-setInterval(function() {
-    target()
-}, the_interval);
-  
+const cron = require('node-cron');
+
+cron.schedule(process.env.cron, () => {
+  target()
+})

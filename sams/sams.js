@@ -55,6 +55,8 @@ async function sams(){
     }
 }
 
-setInterval(function() {
-    sams()
-}, the_interval);
+const cron = require('node-cron');
+
+cron.schedule(process.env.cron, () => {
+  sams()
+})

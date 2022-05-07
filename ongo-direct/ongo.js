@@ -70,6 +70,8 @@ function ongo(){
     request(options, callback);
 }
 
-setInterval(function() {
-    ongo()
-}, the_interval);
+const cron = require('node-cron');
+
+cron.schedule(process.env.cron, () => {
+  ongo()
+})

@@ -44,6 +44,8 @@ async function ihealth(){
     }
 }
 
-setInterval(function() {
-    ihealth()
-}, the_interval);
+const cron = require('node-cron');
+
+cron.schedule(process.env.cron, () => {
+  ihealth()
+})

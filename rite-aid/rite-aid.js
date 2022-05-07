@@ -58,8 +58,8 @@ async function ra() {
   }
 }
 
-var minutes = 120, the_interval = minutes * 60 * 1000;
+const cron = require('node-cron');
 
-setInterval(function() {
+cron.schedule(process.env.cron, () => {
   ra()
-}, the_interval);
+})

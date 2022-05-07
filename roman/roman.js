@@ -43,8 +43,8 @@ async function ro() {
     hook.send(embed);
 }
 
-var minutes = 120, the_interval = minutes * 60 * 1000;
+const cron = require('node-cron');
 
-setInterval(function() {
-    ro()
-}, the_interval);
+cron.schedule(process.env.cron, () => {
+  ro()
+})

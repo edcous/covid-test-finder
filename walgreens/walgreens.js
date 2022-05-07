@@ -59,7 +59,8 @@ async function walgreens(){
   }
 }
 
-var minutes = 120, the_interval = minutes * 60 * 1000;
-setInterval(function() {
+const cron = require('node-cron');
+
+cron.schedule(process.env.cron, () => {
   walgreens()
-}, the_interval);
+})

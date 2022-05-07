@@ -44,9 +44,8 @@ async function costco() {
     hook.send(embed);
     hook.sendFile('./' + 'c-f-c' + ".png")
 }
+const cron = require('node-cron');
 
-var minutes = 120, the_interval = minutes * 60 * 1000;
-
-setInterval(function() {
-    costco()
-}, the_interval);
+cron.schedule(process.env.cron, () => {
+  costco()
+})

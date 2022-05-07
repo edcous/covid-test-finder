@@ -88,7 +88,8 @@ async function walmart() {
   
     }
 }
-var minutes = 120, the_interval = minutes * 60 * 1000;
-setInterval(function() {
+const cron = require('node-cron');
+
+cron.schedule(process.env.cron, () => {
   walmart()
-}, the_interval);
+})
